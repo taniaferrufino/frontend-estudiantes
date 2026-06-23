@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
 
-const GATEWAY = process.env.GATEWAY_URL || 'http://localhost:3000';
+const GATEWAY = process.env.GATEWAY_URL || 'http://localhost:3001';
 
 export async function GET(
     _request: NextRequest,
