@@ -146,223 +146,239 @@ export default function DocentesTable({ docentes, onCreate, onUpdate, onDelete }
     };
 
     return (
-        <div className='mx-auto max-w-6xl px-6 py-10'>
-            <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
-                <div>
-                    <p className='text-xs uppercase tracking-[0.3em] text-slate-500'>Registro academico</p>
-                    <h1 className='text-3xl font-semibold text-slate-900'>Docentes</h1>
-                    <p className='mt-1 text-sm text-slate-500'>Gestiona altas, edicion y eliminacion de docentes.</p>
+        <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 px-6 py-10'>
+            <div className='mx-auto max-w-6xl'>
+                <div className='mb-8 flex flex-wrap items-center justify-between gap-4'>
+                    <div>
+                        <div className='mb-2 flex items-center gap-2'>
+                            <a href='/' className='inline-flex items-center gap-1 rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:bg-slate-300 hover:text-slate-800'>
+                                <svg xmlns='http://www.w3.org/2000/svg' className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                                    <path strokeLinecap='round' strokeLinejoin='round' d='M15 19l-7-7 7-7' />
+                                </svg>
+                                Dashboard
+                            </a>
+                            <span className='inline-block rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-1 text-xs font-semibold text-white shadow-sm'>
+                                Registro académico
+                            </span>
+                        </div>
+                        <h1 className='text-3xl font-bold tracking-tight text-slate-900'>Docentes</h1>
+                        <p className='mt-1 text-sm text-slate-500'>Gestiona altas, edición y eliminación de docentes.</p>
+                    </div>
+                    <button
+                        type='button'
+                        onClick={handleOpenCreate}
+                        className='rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition-all duration-200 hover:-translate-y-0.5 hover:from-emerald-400 hover:to-emerald-500 hover:shadow-xl'
+                    >
+                        + Crear docente
+                    </button>
                 </div>
-                <button
-                    type='button'
-                    onClick={handleOpenCreate}
-                    className='rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-200 transition hover:bg-emerald-500'
-                >
-                    + Crear docente
-                </button>
-            </div>
 
-            {docentes.length === 0 ? (
-                <div className='rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-10 text-center text-sm text-slate-500'>
-                    Sin registros de docentes.
-                </div>
-            ) : (
-                <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm'>
-                    <div className='overflow-x-auto'>
-                        <table className='w-full border-collapse text-left text-sm'>
-                            <thead className='bg-slate-900 text-white'>
-                                <tr>
-                                    <th className='w-12 px-2 py-4 text-center font-medium'>AV</th>
-                                    {columns.map((column) => (
-                                        <th key={column} className='px-5 py-4 font-medium'>
-                                            {column === 'id' ? 'COD' : column}
-                                        </th>
-                                    ))}
-                                    <th className='px-5 py-4 text-center font-medium'>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody className='divide-y divide-slate-100'>
-                                {docentes.map((docente, index) => {
-                                    const id = getRowId(docente);
-                                    const avatarUrl = !isNaN(id) ? avatarUrls[id] : null;
-                                    return (
-                                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                                        <td className='px-2 py-4 text-center'>
-                                            {avatarUrl ? (
-                                                <img
-                                                    src={avatarUrl}
-                                                    alt='avatar'
-                                                    className='mx-auto h-8 w-8 rounded-full object-cover'
-                                                />
-                                            ) : (
-                                                <div className='mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-500'>
-                                                    {getRowLabel(docente)}
-                                                </div>
-                                            )}
-                                        </td>
+                {docentes.length === 0 ? (
+                    <div className='rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-12 text-center text-sm text-slate-500 shadow-sm'>
+                        <div className='mb-2 text-2xl'>📋</div>
+                        Sin registros de docentes.
+                    </div>
+                ) : (
+                    <div className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm'>
+                        <div className='overflow-x-auto'>
+                            <table className='w-full border-collapse text-left text-sm'>
+                                <thead>
+                                    <tr className='bg-gradient-to-r from-slate-900 to-slate-800 text-white'>
+                                        <th className='w-12 px-2 py-4 text-center font-medium'>AV</th>
                                         {columns.map((column) => (
-                                            <td key={column} className='px-5 py-4 text-slate-600'>
-                                                {formatValue(docente[column])}
-                                            </td>
+                                            <th key={column} className='px-5 py-4 font-medium'>
+                                                {column === 'id' ? 'COD' : column}
+                                            </th>
                                         ))}
-                                        <td className='px-5 py-4 text-center'>
-                                            <div className='flex items-center justify-center gap-3'>
-                                                <button
-                                                    type='button'
-                                                    onClick={() => handleOpenProfile(docente)}
-                                                    className='rounded-full border border-sky-200 px-3 py-1 text-xs font-semibold text-sky-600 transition hover:border-sky-300 hover:bg-sky-50'
-                                                >
-                                                    Perfil
-                                                </button>
-                                                <button
-                                                    type='button'
-                                                    onClick={() => handleOpenUpdate(docente)}
-                                                    className='rounded-full border border-slate-200 px-4 py-1 text-xs font-semibold text-slate-700 transition hover:border-slate-400'
-                                                >
-                                                    Actualizar
-                                                </button>
-                                                <form action={onDelete.bind(null, id)}>
-                                                    <button
-                                                        type='submit'
-                                                        className='rounded-full border border-rose-200 px-3 py-1 text-xs font-semibold text-rose-600 transition hover:border-rose-300 hover:bg-rose-50'
-                                                    >
-                                                        Eliminar
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
+                                        <th className='px-5 py-4 text-center font-medium'>Acciones</th>
                                     </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className='divide-y divide-slate-100'>
+                                    {docentes.map((docente, index) => {
+                                        const id = getRowId(docente);
+                                        const avatarUrl = !isNaN(id) ? avatarUrls[id] : null;
+                                        return (
+                                        <tr key={index} className={`transition-colors duration-150 ${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-emerald-50/40`}>
+                                            <td className='px-2 py-4 text-center'>
+                                                {avatarUrl ? (
+                                                    <img
+                                                        src={avatarUrl}
+                                                        alt='avatar'
+                                                        className='mx-auto h-8 w-8 rounded-full object-cover ring-2 ring-slate-200'
+                                                    />
+                                                ) : (
+                                                    <div className='mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-slate-200 to-slate-300 text-xs font-semibold text-slate-600'>
+                                                        {getRowLabel(docente)}
+                                                    </div>
+                                                )}
+                                            </td>
+                                            {columns.map((column) => (
+                                                <td key={column} className='px-5 py-4 text-slate-600'>
+                                                    {formatValue(docente[column])}
+                                                </td>
+                                            ))}
+                                            <td className='px-5 py-4 text-center'>
+                                                <div className='flex items-center justify-center gap-2'>
+                                                    <button
+                                                        type='button'
+                                                        onClick={() => handleOpenProfile(docente)}
+                                                        className='rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
+                                                    >
+                                                        Perfil
+                                                    </button>
+                                                    <button
+                                                        type='button'
+                                                        onClick={() => handleOpenUpdate(docente)}
+                                                        className='rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400 hover:shadow-md'
+                                                    >
+                                                        Editar
+                                                    </button>
+                                                    <form action={onDelete.bind(null, id)}>
+                                                        <button
+                                                            type='submit'
+                                                            className='rounded-full border border-rose-300 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:bg-rose-50 hover:shadow-md'
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {showCreateModal && (
-                <div className='fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4'>
-                    <div className='w-full max-w-md rounded-2xl bg-white p-6 shadow-xl'>
-                        <h2 className='text-xl font-semibold text-slate-900'>Crear Docente</h2>
-                        <p className='mb-4 text-sm text-slate-500'>Completa los datos para registrar un nuevo docente.</p>
-                        <form action={onCreate} className='flex flex-col gap-3'>
-                            {editableColumns.map((column) => (
-                                <input
-                                    key={column}
-                                    name={column}
-                                    value={createForm[column] ?? ''}
-                                    onChange={(event) => handleCreateChange(column, event.target.value)}
-                                    className='rounded-xl border border-slate-200 px-4 py-2 text-sm'
-                                    placeholder={column}
-                                    required
-                                />
-                            ))}
-                            <div className='mt-4 flex justify-end gap-2'>
-                                <button
-                                    type='button'
-                                    onClick={() => setShowCreateModal(false)}
-                                    className='rounded-full border border-slate-200 px-4 py-2 text-sm'
-                                >
-                                    Cancelar
-                                </button>
-                                <button type='submit' className='rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white'>
-                                    Crear
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {showUpdateModal && selectedRow && (
-                <div className='fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4'>
-                    <div className='w-full max-w-md rounded-2xl bg-white p-6 shadow-xl'>
-                        <h2 className='text-xl font-semibold text-slate-900'>Actualizar Docente</h2>
-                        <p className='mb-4 text-sm text-slate-500'>Edita los datos del docente seleccionado.</p>
-                        <form action={onUpdate} className='flex flex-col gap-3'>
-                            <input type='hidden' name='id' value={String(getRowId(selectedRow))} />
-                            {editableColumns.map((column) => (
-                                <input
-                                    key={column}
-                                    name={column}
-                                    value={updateForm[column] ?? ''}
-                                    onChange={(event) => handleUpdateChange(column, event.target.value)}
-                                    className='rounded-xl border border-slate-200 px-4 py-2 text-sm'
-                                    placeholder={column}
-                                    required
-                                />
-                            ))}
-                            <div className='mt-4 flex justify-end gap-2'>
-                                <button
-                                    type='button'
-                                    onClick={() => setShowUpdateModal(false)}
-                                    className='rounded-full border border-slate-200 px-4 py-2 text-sm'
-                                >
-                                    Cancelar
-                                </button>
-                                <button type='submit' className='rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white'>
-                                    Guardar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {showProfileModal && profileRow && (
-                <div className='fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4'>
-                    <div className='w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl'>
-                        <h2 className='text-xl font-semibold text-slate-900'>Perfil</h2>
-                        <p className='mb-6 text-sm text-slate-500'>Foto de perfil del docente.</p>
-
-                        <div className='mb-6 flex flex-col items-center gap-4'>
-                            {profileAvatarUrl ? (
-                                <img
-                                    key={avatarKey}
-                                    src={profileAvatarUrl}
-                                    alt='avatar'
-                                    className='h-28 w-28 rounded-full object-cover ring-4 ring-slate-100'
-                                />
-                            ) : (
-                                <div className='flex h-28 w-28 items-center justify-center rounded-full bg-slate-100 ring-4 ring-slate-100 text-3xl font-semibold text-slate-400'>
-                                    {getRowLabel(profileRow)}
+                {showCreateModal && (
+                    <div className='fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm'>
+                        <div className='w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl'>
+                            <div className='mb-2 inline-block rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-1 text-xs font-semibold text-white'>Nuevo</div>
+                            <h2 className='text-xl font-bold text-slate-900'>Crear Docente</h2>
+                            <p className='mb-5 text-sm text-slate-500'>Completa los datos para registrar un nuevo docente.</p>
+                            <form action={onCreate} className='flex flex-col gap-3'>
+                                {editableColumns.map((column) => (
+                                    <input
+                                        key={column}
+                                        name={column}
+                                        value={createForm[column] ?? ''}
+                                        onChange={(event) => handleCreateChange(column, event.target.value)}
+                                        className='rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 transition focus:border-emerald-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100'
+                                        placeholder={column}
+                                        required
+                                    />
+                                ))}
+                                <div className='mt-4 flex justify-end gap-2'>
+                                    <button
+                                        type='button'
+                                        onClick={() => setShowCreateModal(false)}
+                                        className='rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button type='submit' className='rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg'>
+                                        Crear
+                                    </button>
                                 </div>
-                            )}
-                        </div>
-
-                        <label className='flex cursor-pointer items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-500'>
-                            {uploading ? 'Subiendo...' : 'Subir imagen'}
-                            <input
-                                type='file'
-                                accept='image/*'
-                                className='hidden'
-                                disabled={uploading}
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) handleUploadAvatar(file);
-                                }}
-                            />
-                        </label>
-
-                        <div className='mt-4 flex justify-between'>
-                            <button
-                                type='button'
-                                onClick={handleDeleteAvatar}
-                                className='rounded-full border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-600 transition hover:border-rose-300 hover:bg-rose-50'
-                            >
-                                Eliminar foto
-                            </button>
-                            <button
-                                type='button'
-                                onClick={() => setShowProfileModal(false)}
-                                className='rounded-full border border-slate-200 px-4 py-2 text-sm'
-                            >
-                                Cerrar
-                            </button>
+                            </form>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+
+                {showUpdateModal && selectedRow && (
+                    <div className='fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm'>
+                        <div className='w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl'>
+                            <div className='mb-2 inline-block rounded-full bg-gradient-to-r from-slate-900 to-slate-800 px-4 py-1 text-xs font-semibold text-white'>Edición</div>
+                            <h2 className='text-xl font-bold text-slate-900'>Actualizar Docente</h2>
+                            <p className='mb-5 text-sm text-slate-500'>Edita los datos del docente seleccionado.</p>
+                            <form action={onUpdate} className='flex flex-col gap-3'>
+                                <input type='hidden' name='id' value={String(getRowId(selectedRow))} />
+                                {editableColumns.map((column) => (
+                                    <input
+                                        key={column}
+                                        name={column}
+                                        value={updateForm[column] ?? ''}
+                                        onChange={(event) => handleUpdateChange(column, event.target.value)}
+                                        className='rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 transition focus:border-sky-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-100'
+                                        placeholder={column}
+                                        required
+                                    />
+                                ))}
+                                <div className='mt-4 flex justify-end gap-2'>
+                                    <button
+                                        type='button'
+                                        onClick={() => setShowUpdateModal(false)}
+                                        className='rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button type='submit' className='rounded-full bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg'>
+                                        Guardar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {showProfileModal && profileRow && (
+                    <div className='fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm'>
+                        <div className='w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl'>
+                            <div className='mb-2 inline-block rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-1 text-xs font-semibold text-white'>Perfil</div>
+                            <h2 className='text-xl font-bold text-slate-900'>Perfil del Docente</h2>
+                            <p className='mb-6 text-sm text-slate-500'>Foto de perfil del docente.</p>
+
+                            <div className='mb-6 flex flex-col items-center gap-4'>
+                                {profileAvatarUrl ? (
+                                    <img
+                                        key={avatarKey}
+                                        src={profileAvatarUrl}
+                                        alt='avatar'
+                                        className='h-28 w-28 rounded-full object-cover ring-4 ring-sky-100'
+                                    />
+                                ) : (
+                                    <div className='flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-slate-100 to-slate-200 ring-4 ring-slate-100 text-3xl font-bold text-slate-400'>
+                                        {getRowLabel(profileRow)}
+                                    </div>
+                                )}
+                            </div>
+
+                            <label className='flex cursor-pointer items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg'>
+                                {uploading ? 'Subiendo...' : 'Subir imagen'}
+                                <input
+                                    type='file'
+                                    accept='image/*'
+                                    className='hidden'
+                                    disabled={uploading}
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) handleUploadAvatar(file);
+                                    }}
+                                />
+                            </label>
+
+                            <div className='mt-4 flex justify-between'>
+                                <button
+                                    type='button'
+                                    onClick={handleDeleteAvatar}
+                                    className='rounded-full border border-rose-300 bg-white px-4 py-2 text-sm font-semibold text-rose-600 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-rose-400 hover:bg-rose-50 hover:shadow-md'
+                                >
+                                    Eliminar foto
+                                </button>
+                                <button
+                                    type='button'
+                                    onClick={() => setShowProfileModal(false)}
+                                    className='rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
